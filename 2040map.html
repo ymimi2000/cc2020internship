@@ -1,0 +1,528 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Google Maps - gmplot</title>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyB_991RCByH8iccRMIJ5hFsNb7pjnRBGgw"></script>
+<script type="text/javascript">
+    function initialize() {
+        var map = new google.maps.Map(document.getElementById("map_canvas"), {
+            mapTypeId: "satellite",
+            zoom: 16,
+            center: new google.maps.LatLng(28.627092, -80.621021)
+        });
+
+        var marker_icon_FFFF00 = {
+            url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAiCAYAAACwaJKDAAAABmJLR0QA/wD/AP+gvaeTAAACU0lEQVRIia3Vv2sTYRgH8M9V0lYw4iRaSXVwEMQfFCwOUhcHFx21OPQvEMTVUUEUURQXwVUHcSkVB62ohWzFQAsiCoIKVoUiFX/ViHkcLleMttdr4hdeLne555P33rz3von8bMc+bEIXGniLKp4uVZQscf0AzmJPfz87d7JuHXNzTE/z5g2YxCk8WKZjEpxLEo3hYVGriUZDRLS2Wk0MD4sk0cC5nM5JcLlcFnfu/Ast1sbGRLkscHkp+ERvr6hWi4FZq1ZFb6/Aib/BPny9eHFlYNYuXRL42nQWcmbzZlGvt4fW62LLFoEzpNMEDo+MUCot9z8unlKJkZHUydBV2LZ/f3tglqEhsA2rulBCd39/Z2izvhul7PFFdIb+Wd+FOuqvX3eGNuvrqGfv87OJic7QZv2zpgdOVyrix4/2p1SlInD6zx/aiM/nz7eHXrgg8LnptOR4d7d4/Hhl4MSE6OkROL7U0Fwpl8XkZDHwyROxdq3AlbzxTnCzr0/MzOSDs7ML43hLztKXZTWmDx5cfC3N2tGjAs+xZjkwy278vHFjcXB8XCAwVBTMcrVSEfPzrWCjIQYHBW6vFIT1+Hb9eiv68KGQTvAd7aBwbdeuVvTIEaHAZpeXAcTUVArOzS1sHcfyirryvkQNL0ZH05N795if9x1jnaBwd3w8/XD/PniELwXqcnOopyddbLZuFTjZKQgbSNeEJBHYu1xBkcd/j9nRUSL8wlSHnVzI5MCAwMsiNxfpKcy+TLlCm05R9OOnT0gX4v+GfmgeZ/4n+q55fFXk5t99kkc0nvh3jgAAAABJRU5ErkJggg==",
+            labelOrigin: new google.maps.Point(10, 11)
+        };
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.630689, -80.622820),
+            label: "1",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.630689, -80.621920),
+            label: "2",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.630689, -80.621021),
+            label: "3",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        var marker_icon_FFFFFF = {
+            url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAiCAYAAACwaJKDAAAABmJLR0QA/wD/AP+gvaeTAAAClklEQVRIia3VsUsbYRjH8e9FLkmhJ06lTbno4CCUaglUOpS4dHCpo4YO+QsE6dpRoSiiKF0KrnYoXUKkg6bYBG4LHiRQpIVAFZq2EErE2iZXek8H78TY5HLm/C0v3N3zufd97733VfDOHeAhcBsIATbwBTCAD52KlA7XHwHPgfvxeJzR0VEGBgao1+uUy2UODw8BisAz4F2XjqEAi4qi2KlUSkzTFNu25WJM05RUKiWKotjAokfnUIA1TdNka2vrP6hdstmsaJomwFoneC4ajYphGL5AN4ZhSDQaFWDuIhgDTlZWVi4FulldXRXgxHHOsjA4OCiWZfWEWpYlQ0NDAizA6TIBmEqn06iq2u1Dto2qqqTTaYApF+0DRiYmJnoC3SSTSYARoC8EqEA4Ho8HQp36MKC6w0dEAqHn60OABVgHBweBUKfeAiz3f94vFAqBUKd+3/EAmNd1XZrNZs9LStd1AebPv+gWcLy0tNQTury8LMCx47RkNhwOSz6fvxRYKBQkEokIMNtpatY1TZNisegL3Nvbk/7+fgHWveZbAV7FYjGpVqueYK1Wc+fxNR5bn5trQHlycrLtXupmZmZGgI/A9W6gm3vAn83NzbZgLpcTQICkX9DNC13XpdFotIC2bcv4+LgAby4LAtwAfm1sbLSgu7u7wukCv9sLCvBybGysBZ2enhZ8HHZeSQBSKpVERKRer7tHxxOvopDXTcAEPmUyGQC2t7dpNBq/gWwQFOBtLpcDYGdnB+A98NNHnWceRyIRaTabMjw8LMDToCDATUDy+bwoiiLAg24Ffob/DahlMhlE5C9QCtjJsxQTiYQAFT8P++kpQK1SqQD4OnP8oj+Ojo7gdCO+MvS701avEv3qtJ/9PPwP0ZvxC1UctAkAAAAASUVORK5CYII=",
+            labelOrigin: new google.maps.Point(10, 11)
+        };
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.630689, -80.620122),
+            label: "4",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.630689, -80.619222),
+            label: "5",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.623719),
+            label: "6",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.622820),
+            label: "7",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.621920),
+            label: "8",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.621021),
+            label: "9",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.620122),
+            label: "10",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.619222),
+            label: "11",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.629790, -80.618323),
+            label: "12",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.624618),
+            label: "13",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.623719),
+            label: "14",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.622820),
+            label: "15",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.621920),
+            label: "16",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.621021),
+            label: "17",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.620122),
+            label: "18",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.619222),
+            label: "19",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.618323),
+            label: "20",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.628891, -80.617424),
+            label: "21",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.624618),
+            label: "22",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.623719),
+            label: "23",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.622820),
+            label: "24",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.621920),
+            label: "25",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.621021),
+            label: "26",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.620122),
+            label: "27",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.619222),
+            label: "28",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.618323),
+            label: "29",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627991, -80.617424),
+            label: "30",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.624618),
+            label: "31",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.623719),
+            label: "32",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.622820),
+            label: "33",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.621920),
+            label: "34",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.621021),
+            label: "35",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.620122),
+            label: "36",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.619222),
+            label: "37",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.618323),
+            label: "38",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.617424),
+            label: "39",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.627092, -80.616524),
+            label: "40",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.624618),
+            label: "41",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.623719),
+            label: "42",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.622820),
+            label: "43",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.621920),
+            label: "44",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.621021),
+            label: "45",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.620122),
+            label: "46",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.619222),
+            label: "47",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.618323),
+            label: "48",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.626193, -80.617424),
+            label: "49",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.624618),
+            label: "50",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.623719),
+            label: "51",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.622820),
+            label: "52",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.621920),
+            label: "53",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.621021),
+            label: "54",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.620122),
+            label: "55",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.619222),
+            label: "56",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.618323),
+            label: "57",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.625293, -80.617424),
+            label: "58",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.623719),
+            label: "59",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.622820),
+            label: "60",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.621920),
+            label: "61",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.621021),
+            label: "62",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.620122),
+            label: "63",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.619222),
+            label: "64",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.624394, -80.618323),
+            label: "65",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.623495, -80.622820),
+            label: "66",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.623495, -80.621920),
+            label: "67",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.623495, -80.621021),
+            label: "68",
+            icon: marker_icon_FFFFFF,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.623495, -80.620122),
+            label: "69",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.623495, -80.619222),
+            label: "70",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(28.622595, -80.621021),
+            label: "71",
+            icon: marker_icon_FFFF00,
+            map: map
+        });
+
+    }
+</script>
+</head>
+<body style="margin:0px; padding:0px;" onload="initialize()">
+    <div id="map_canvas" style="width: 100%; height: 100%;" />
+</body>
+</html>
