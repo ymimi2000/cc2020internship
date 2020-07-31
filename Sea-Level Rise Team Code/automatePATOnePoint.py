@@ -70,7 +70,7 @@ def pincolor(val):
   return ["white", "No Flood Risk"]
 
 def create_maps(filename):
-  key = "AIzaSyB_991RCByH8iccRMIJ5hFsNb7pjnRBGgw"
+  key = "INSERT_KEY"
 
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")

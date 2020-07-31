@@ -3,7 +3,6 @@ import os
 import numpy;
 import math 
 from shapely.geometry import Point, Polygon
-import shapely
 import pandas as pd
 # Import gmplot library.
 from gmplot import *
@@ -13,36 +12,40 @@ from selenium.webdriver.chrome.options import Options
 import csv
 import webbrowser
 from selenium.webdriver.common.keys import Keys
-from PIL import Image, ImageDraw, ImageFont
-import imageio
-
 
 
 def create_csv():
-  if len(sys.argv) < 5:
-    print('Usage: %s gridmeters radiusmeters lat lon' % (sys.argv[0]));
+  if len(sys.argv) < 3:
+    print('Usage: %s meters polygon_vertices.csv' % (sys.argv[0]));
     print();
     print('Got:',sys.argv);
     sys.exit(1);
-
+  
   meters = float(sys.argv[1]);
-  rmeters = float(sys.argv[2])
-  lat0 = float(sys.argv[3])
-  lon0 = float(sys.argv[4])
   outFileName = 'test.csv'
+
+  df = pd.read_csv(sys.argv[2])
+
+  lat1 = df['Lat'].max()
+  lon1 = df['Long'].min()
+  lat2 = df['Lat'].min()
+  lon2 = df['Long'].max()
+
+  # store different polygons and separate data by ID
+  all_polygons = []
+
+  for name, group in df.groupby('ID'): 
+    #print("ID: ",name)
+    #print(group)
+    if len(group)>= 3:
+        poly = Polygon(zip(group.Lat,group.Long)) #
+        all_polygons.append(poly)
+        #print(poly.wkt)
+
 
   # approximate radius of earth in million meters
   R = 6371000
-
-
-  lat1 = lat0 + (180/math.pi)*(rmeters/R)
-  lon1 = lon0 - (180/math.pi)*(rmeters/R)* math.cos((lat1*(math.pi/180)))
-  lat2 = lat0 - (180/math.pi)*(rmeters/R)
-  lon2 = lon0 + (180/math.pi)*(rmeters/R)* math.cos((lat2*(math.pi/180)))
-
-  circle = Point(lat0, lon0).buffer(1)
-  ellipse = shapely.affinity.scale(circle, (180/math.pi)*(rmeters/R), (180/math.pi)*(rmeters/R))
-
+  
   latList = numpy.empty(0)
 
   lat = lat1
@@ -76,16 +79,26 @@ def create_csv():
 
   outFile = open(outFileName, 'w');
   outFile.write('Id,Latitude,Longitude\n');
-
+  
+  k = 0
   count = 1
   for i in range(len(lonGrid)):
-    lonGrid[i] = lonGrid[i] * math.cos((latGrid[i]*(math.pi/180)))
     p = Point(latGrid[i], lonGrid[i])
-    #if ellipse.contains(p):
-    outFile.write(str(count) + ',' + str(latGrid[i]) + ',' + str(lonGrid[i]) + '\n');
-    count = count + 1
+    k = 0
+    # check if point is in any of the polygons
+    for poly in all_polygons:
+      if poly.contains(p):
+        k = 1
+    if k == 1:
+      outFile.write(str(count) + ',' + str(latGrid[i]) + ',' + str(lonGrid[i]) + '\n');
+      count = count + 1
 
-  return lat0,lon0
+  dflength = len(df['Lat'])/2
+  retLat = df['Lat'][dflength]
+  retLon = df['Long'][dflength]
+
+
+  return retLat,retLon
 
 def auto_PAT():
   path = os.getcwd()
@@ -130,13 +143,12 @@ def pincolor(val):
   return ["white", "No Flood Risk"]
 
 def create_maps(filename, lat, lon):
-  key = "AIzaSyB_991RCByH8iccRMIJ5hFsNb7pjnRBGgw"
-  zoom = 16
+  key = "INSERT_KEY"
 
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[6])
       lis = pincolor(val)
@@ -149,7 +161,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[7])
       lis = pincolor(val)
@@ -162,7 +174,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[8])
       lis = pincolor(val)
@@ -175,7 +187,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[9])
       lis = pincolor(val)
@@ -188,7 +200,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[10])
       lis = pincolor(val)
@@ -201,7 +213,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[11])
       lis = pincolor(val)
@@ -214,7 +226,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[12])
       lis = pincolor(val)
@@ -227,7 +239,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[13])
       lis = pincolor(val)
@@ -240,7 +252,7 @@ def create_maps(filename, lat, lon):
   with open(filename) as f:
     reader = csv.reader(f, delimiter=",")
     next(reader)
-    gmap=gmplot.GoogleMapPlotter(lat, lon, zoom, apikey=key, map_type='SATELLITE')
+    gmap=gmplot.GoogleMapPlotter(lat, lon, 18, apikey=key, map_type='SATELLITE')
     for i in reader:
       val = float(i[14])
       lis = pincolor(val)
@@ -250,60 +262,10 @@ def create_maps(filename, lat, lon):
       gmap.marker(float(i[1]), float(i[2]), color=color, label=str(i[0]))
     gmap.draw( "2100map.html")
 
-def fullpage_screenshot():
-    path = os.getcwd()
-    for filename in os.listdir(path):
-      if filename.endswith('.html'):
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--start-maximized')
-        driver = webdriver.Chrome(executable_path=path + '/chromedriver', options=chrome_options)
-        driver.get("file://" + path + "/" + filename)
-        time.sleep(2)
-
-        driver.save_screenshot(filename.replace(".html", "") + ".png")
-        driver.quit()
-
-    for filename in os.listdir(path):
-      if filename.endswith('.png'):
-        # create Image object with the input image
-
-        image = Image.open(filename)
-
-        # initialise the drawing context with
-        # the image object as background
-
-        draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype('/Library/Fonts/Arial.ttf', size=45)
-
-      # starting position of the message
-
-        (x, y) = (20, 100)
-        message = filename.replace(".png", "").replace("map", " Map")
-        color = 'rgb(255, 255, 255)' # black color
-
-        # draw the message on the background
-
-        draw.text((x, y), message, fill=color, font=font)
-        image.save(filename)
-
-    images = []
-    images.append(imageio.imread("2020map.png"))
-    images.append(imageio.imread("2030map.png"))
-    images.append(imageio.imread("2040map.png"))
-    images.append(imageio.imread("2050map.png"))
-    images.append(imageio.imread("2060map.png"))
-    images.append(imageio.imread("2070map.png"))
-    images.append(imageio.imread("2080map.png"))
-    images.append(imageio.imread("2090map.png"))
-    images.append(imageio.imread("2100map.png"))
-    imageio.mimsave('maps.gif', images, 'GIF', duration=1)
-    os.system('rm *.png')
   
   
   
 if __name__=='__main__':
   lat,lon = create_csv()
   filename = auto_PAT()
-  create_maps(filename, lat, lon)
-  fullpage_screenshot() 
+  create_maps(filename, lat, lon) 
